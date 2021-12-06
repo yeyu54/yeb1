@@ -1,0 +1,20 @@
+package com.yeyu.service.impl;
+
+import com.yeyu.pojo.SalaryAdjust;
+import com.yeyu.mapper.SalaryAdjustMapper;
+import com.yeyu.service.ISalaryAdjustService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.stereotype.Service;
+
+/**
+ * <p>
+ *  服务实现类
+ * </p>
+ *
+ * @author yeyu
+ * @since 2021-11-14
+ */
+@Service
+public class SalaryAdjustServiceImpl extends ServiceImpl<SalaryAdjustMapper, SalaryAdjust> implements ISalaryAdjustService {
+
+}

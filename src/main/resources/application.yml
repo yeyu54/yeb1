@@ -1,0 +1,16 @@
+spring:
+  application:
+    name:yeb
+  datasource:
+    url: jdbc:mysql://8.142.13.119::3306/yeb?serverTimezone=UTC
+    hikari:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: Zqz.1234
+server:
+  port: 8888
+jwt :
+  tokenHeader: Authorization
+  secret: yeb-secret
+  expiration: 604800
+  tokenHead: Bearer
