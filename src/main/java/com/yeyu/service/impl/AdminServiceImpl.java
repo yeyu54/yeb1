@@ -1,25 +1,23 @@
 package com.yeyu.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yeyu.config.security.JwTokenUtils;
-import com.yeyu.pojo.Admin;
 import com.yeyu.mapper.AdminMapper;
+import com.yeyu.pojo.Admin;
 import com.yeyu.pojo.RespBean;
 import com.yeyu.service.IAdminService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.security.Security;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,22 +39,27 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     private PasswordEncoder passwordEncoder;
     @Autowired
     private JwTokenUtils jwTokenUtils;
-    @Value("${jwt.tokenHeader}")
+    @Value("${jwt.tokenHead}")
     private String tokenHead;
     /**
     * @Description:登录之后返回token
-    * @Param: [username, password, request]
+    * @Param: [username, password, request,code]
     * @return
     * @date: 2021/11/14
     */
     @Override
-  public RespBean login(String username, String password, HttpServletRequest request){
+  public RespBean login(String username,String password,String code, HttpServletRequest request){
+        String captcha = (String) request.getSession().getAttribute("captcah");
+        if (StringUtils.isEmpty(code) || !captcha.equalsIgnoreCase(code)){
+            return RespBean.error("验证码输入错误,请重新输入！");
+
+        }
+
        //登录
         UserDetails userDetails =  userDetailsService.loadUserByUsername(username);
 
-        if (null == userDetails || passwordEncoder.matches(password,userDetails.getPassword())){
+        if (null == userDetails || !passwordEncoder.matches(password,userDetails.getPassword())){
             return RespBean.error("用户名密码不正确");
-
        }
 
        if (!userDetails.isEnabled()){
@@ -80,5 +83,6 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     public Admin getAdminusername(String username){
         return adminMapper.selectOne(new QueryWrapper<Admin>().eq("username",username).eq("enabled",true));
     }
+
 
 }

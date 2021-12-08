@@ -2,7 +2,7 @@ spring:
   application:
     name:yeb
   datasource:
-    url: jdbc:mysql://8.142.13.119::3306/yeb?serverTimezone=UTC
+    url: jdbc:mysql://8.142.13.119:3306/yeb?useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=false&serverTimezone=GMT%2B8
     hikari:
       driver-class-name: com.mysql.cj.jdbc.Driver
     username: root

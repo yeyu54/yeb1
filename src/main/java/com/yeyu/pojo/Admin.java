@@ -1,17 +1,17 @@
 package com.yeyu.pojo;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
-import java.util.Collection;
-
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.io.Serializable;
+import java.util.Collection;
 
 /**
  * <p>
@@ -55,7 +55,7 @@ public class Admin implements Serializable , UserDetails {
     private String password;
 
     @ApiModelProperty(value = "用户头像")
-    private String userFace;
+    private String user_face;
 
     @ApiModelProperty(value = "备注")
     private String remark;

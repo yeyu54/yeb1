@@ -46,8 +46,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/login","logout")
-                .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -68,7 +66,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/css/**",
                 "/js/**",
                 "/index.html",
-                "/webjars/**"
+                "/webjars/**",
+                "/logout"
                 ,"/swagger-resources/**"
                 ,"/v2/api-docs/**"
 
