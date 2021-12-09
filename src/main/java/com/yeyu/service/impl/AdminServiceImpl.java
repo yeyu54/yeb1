@@ -2,10 +2,12 @@ package com.yeyu.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yeyu.config.security.JwTokenUtils;
+import com.yeyu.config.security.component.JwTokenUtils;
 import com.yeyu.mapper.AdminMapper;
+import com.yeyu.mapper.RoleMapper;
 import com.yeyu.pojo.Admin;
 import com.yeyu.pojo.RespBean;
+import com.yeyu.pojo.Role;
 import com.yeyu.service.IAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +21,7 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -41,6 +44,9 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     private JwTokenUtils jwTokenUtils;
     @Value("${jwt.tokenHead}")
     private String tokenHead;
+    @Autowired
+    private RoleMapper roleMapper;
+
     /**
     * @Description:登录之后返回token
     * @Param: [username, password, request,code]
@@ -83,6 +89,9 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     public Admin getAdminusername(String username){
         return adminMapper.selectOne(new QueryWrapper<Admin>().eq("username",username).eq("enabled",true));
     }
-
+    @Override
+    public List<Role> getrole(Integer adminId){
+        return roleMapper.getroles(adminId);
+    }
 
 }

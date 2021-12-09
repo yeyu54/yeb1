@@ -1,5 +1,8 @@
 package com.yeyu.config.security;
 
+import com.yeyu.config.security.component.JwtTokenFilter;
+import com.yeyu.config.security.component.RestWithoutPermission;
+import com.yeyu.config.security.component.Restprint;
 import com.yeyu.pojo.Admin;
 import com.yeyu.service.IAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/index.html",
                 "/webjars/**",
                 "/logout"
+                ,"/captcha"
                 ,"/swagger-resources/**"
                 ,"/v2/api-docs/**"
 

@@ -1,4 +1,4 @@
-package com.yeyu.config.security;
+package com.yeyu.config.security.component;
 
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;

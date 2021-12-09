@@ -1,4 +1,4 @@
-package com.yeyu.config.security;
+package com.yeyu.config.security.component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yeyu.pojo.RespBean;
