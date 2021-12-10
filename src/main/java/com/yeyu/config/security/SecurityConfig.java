@@ -1,21 +1,22 @@
 package com.yeyu.config.security;
 
-import com.yeyu.config.security.component.JwtTokenFilter;
-import com.yeyu.config.security.component.RestWithoutPermission;
-import com.yeyu.config.security.component.Restprint;
+import com.yeyu.config.security.component.*;
 import com.yeyu.pojo.Admin;
 import com.yeyu.service.IAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
@@ -32,7 +33,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private Restprint restprint;
     @Autowired
     private RestWithoutPermission restWithoutPermission;
-
+    @Autowired
+    private Interceptor interceptor;
+    @Autowired
+    private CusetUrl cusetUrl;
 
     protected  void configure(AuthenticationManagerBuilder auth) throws  Exception{
         auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
@@ -51,8 +55,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .anyRequest()
                 .authenticated()
+                //动态权限配置
+                .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
+                    @Override
+                    public <O extends FilterSecurityInterceptor> O postProcess(O o) {
+                       o.setAccessDecisionManager(cusetUrl);
+                       o.setSecurityMetadataSource(interceptor);
+                        return o;
+                    }
+
+                })
                 .and()
                 .headers()
+
                 .cacheControl();
         //拦截器
         http.addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -83,9 +98,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return username ->{
          Admin admin =   adminService.getAdminusername(username);
             if (null != admin){
+                admin.setRoles(adminService.getrole(admin.getId()));
                 return admin;
             }
-            return null;
+            throw new UsernameNotFoundException("用户名或密码不正确");
         };
 
 

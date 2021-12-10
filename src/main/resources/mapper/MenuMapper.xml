@@ -30,10 +30,10 @@
         </collection>
     </resultMap>
     <resultMap id="menuwithrole" type="com.yeyu.pojo.Menu" extends="BaseResultMap">
-        <collection property="roles" ofType="com.yeyu.pojo.Menu">
+        <collection property="roles" ofType="com.yeyu.pojo.Role">
             <id column="rid" property="id" />
             <result column="rname" property="name" />
-            <result column="rnamezh" property="nameZh"/>
+            <result column="rnameZh" property="nameZh"/>
         </collection>
     </resultMap>
     <!-- 通用查询结果列 -->
@@ -72,12 +72,13 @@
             m2.enabled = TRUE
         ORDER BY m2.id
     </select>
+
     <select id="getmenuwithrole" resultMap="menuwithrole">
         SELECT
             m.*,
             r.id AS rid,
             r.`name` AS rname,
-            r.nameZh AS rnamezh
+            r.nameZh AS rnameZh
         FROM
             t_menu m,
             t_menu_role mr,
