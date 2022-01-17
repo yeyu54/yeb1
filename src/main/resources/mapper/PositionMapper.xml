@@ -6,13 +6,13 @@
     <resultMap id="BaseResultMap" type="com.yeyu.pojo.Position">
         <id column="id" property="id" />
         <result column="name" property="name" />
-        <result column="createDate" property="createDate" />
+        <result column="create_date" property="create_date" />
         <result column="enabled" property="enabled" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, createDate, enabled
+        id, name, create_date, enabled
     </sql>
 
 </mapper>

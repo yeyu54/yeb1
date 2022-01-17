@@ -27,7 +27,7 @@ public class Restprint implements AuthenticationEntryPoint {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
-        RespBean bean = RespBean.error("未登录，请联系管理员");
+        RespBean bean = RespBean.error("未登，请联系管理员");
         out.write(new ObjectMapper().writeValueAsString(bean));
         out.flush();
         out.close();

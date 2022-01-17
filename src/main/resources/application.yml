@@ -4,7 +4,13 @@ spring:
   datasource:
     url: jdbc:mysql://8.142.13.119:3306/yeb?useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=false&serverTimezone=GMT%2B8
     hikari:
-      driver-class-name: com.mysql.cj.jdbc.Driver
+      max-lifetime: 500000
+      minimum-idle: 5
+      maximum-pool-size: 15
+      auto-commit: true
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+    driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: Zqz.1234
   redis:
