@@ -16,4 +16,6 @@ import java.util.List;
 public interface IMenuService extends IService<Menu> {
     List<Menu> getmenu();
     List<Menu> getmenuwithrole();
+
+    List<Menu> getAllMenus();
 }

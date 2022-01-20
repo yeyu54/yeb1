@@ -32,3 +32,6 @@ jwt :
   secret: yeb-secret
   expiration: 604800
   tokenHead: Bearer
+logging:
+  level:
+    com.yeyu.mapper: debug
