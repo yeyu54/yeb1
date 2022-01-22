@@ -1,9 +1,6 @@
 package com.yeyu.controller;
 
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.yeyu.pojo.Menu;
-import com.yeyu.pojo.MenuRole;
 import com.yeyu.pojo.Position;
 import com.yeyu.pojo.RespBean;
 import com.yeyu.service.IMenuRoleService;
@@ -16,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -32,10 +28,7 @@ public class PositionController {
 
     @Autowired
     private IPositionService positionService;
-    @Autowired
-    private IMenuService menuService;
-    @Autowired
-    private IMenuRoleService menuRoleService;
+
 
     @ApiOperation(value = "获取所有数据信息")
     @GetMapping("/")
@@ -76,27 +69,5 @@ public class PositionController {
             return RespBean.success("删除成功");
         }
         return RespBean.error("删除失败！");
-    }
-
-    @ApiOperation(value = "查询所有菜单")
-    @GetMapping("/menus")
-    public List<Menu> getAllMenu(){
-        return menuService.getAllMenus();
-    }
-
-    @ApiOperation(value = "根据角色id查询角色")
-    @GetMapping("/mid/{rid}")
-    public List<Integer> getMenuByid(@PathVariable Integer rid){
-        return menuRoleService.list(new QueryWrapper<MenuRole>().
-                eq("rid",rid)).stream().
-                map(MenuRole::getMid).
-                collect(Collectors.toList());
-    }
-
-    @ApiOperation(value = "更新角色菜单")
-    @PutMapping("/")
-    public RespBean updateRole(){
-
-        return RespBean.error("更新失败");
     }
 }

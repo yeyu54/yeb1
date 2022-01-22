@@ -36,13 +36,13 @@
             <result column="rnameZh" property="nameZh"/>
         </collection>
     </resultMap>
-    <resultMap id="MenuWithChildren" type="com.yeyu.pojo.Menu" extends="BaseResultMap">
+    <resultMap id="MenusWithChildren" type="com.yeyu.pojo.Menu" extends="BaseResultMap">
         <id column="id1" property="id" />
         <result column="name1" property="name" />
-        <collection property="Children" ofType="com.yeyu.pojo.Menu">
+        <collection property="children" ofType="com.yeyu.pojo.Menu">
             <id column="id2" property="id" />
             <result column="name2" property="name" />
-            <collection property="Children" ofType="com.yeyu.pojo.Menu">
+            <collection property="children" ofType="com.yeyu.pojo.Menu">
                 <id column="id3" property="id" />
                 <result column="name3" property="name" />
             </collection>
@@ -102,7 +102,7 @@
         ORDER BY m.id
     </select>
 
-    <select id="getAllMenus" resultMap="MenuWithChildren">
+    <select id="getAllMenus" resultMap="MenusWithChildren">
         SELECT
             m1.id AS id1,
             m1.`name` AS name1,

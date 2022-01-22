@@ -1,14 +1,19 @@
 package com.yeyu.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.yeyu.pojo.Menu;
+import com.yeyu.pojo.MenuRole;
 import com.yeyu.pojo.RespBean;
 import com.yeyu.pojo.Role;
+import com.yeyu.service.IMenuRoleService;
+import com.yeyu.service.IMenuService;
 import com.yeyu.service.IRoleService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author 13474
@@ -20,6 +25,10 @@ import java.util.List;
 public class PermissController {
     @Autowired
     private IRoleService roleService;
+    @Autowired
+    private IMenuService menuService;
+    @Autowired
+    private IMenuRoleService menuRoleService;
 
     @ApiOperation(value = "获取所有角色")
     @GetMapping("/")
@@ -40,20 +49,6 @@ public class PermissController {
         }
         return RespBean.error("添加失败");
     }
-
-    @ApiOperation(value = "更新角色")
-    @PutMapping("/")
-    public RespBean updateRole(@RequestBody Role role){
-
-        if (!role.getName().startsWith("ROLE_")){
-            role.setName("ROLE_"+role.getName());
-        }
-        if (roleService.updateById(role)){
-            return RespBean.success("更新成功");
-        }
-        return RespBean.error("更新失败");
-    }
-
     @ApiOperation(value = "删除角色")
     @DeleteMapping("/role/{rid}")
     public RespBean deleteRole(Integer rid){
@@ -63,13 +58,24 @@ public class PermissController {
         return RespBean.error("删除失败");
     }
 
-    @ApiOperation(value = "批量删除")
-    @DeleteMapping("/")
-    public RespBean deleteRoles(Integer[] ids){
-        if (roleService.removeByIds(Arrays.asList(ids))){
-            return RespBean.success("删除成功");
-        }
-        return RespBean.error("删除失败");
+    @ApiOperation(value = "查询所有菜单")
+    @GetMapping("/menus")
+    public List<Menu> getAllMenu(){
+        return menuService.getAllMenus();
     }
 
+    @ApiOperation(value = "根据角色id查询角色")
+    @GetMapping("/mid/{rid}")
+    public List<Integer> getMenuByid(@PathVariable Integer rid){
+        return menuRoleService.list(new QueryWrapper<MenuRole>().
+                eq("rid",rid)).stream().
+                map(MenuRole::getMid).
+                collect(Collectors.toList());
+    }
+    @ApiOperation(value = "更新角色菜单")
+    @PutMapping("/")
+    public RespBean updateMenuRole(Integer rid, Integer[] mids){
+        return menuRoleService.updateMenuRole(rid,mids);
+    }
+    
 }
