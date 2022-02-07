@@ -9,6 +9,7 @@ import com.yeyu.pojo.Admin;
 import com.yeyu.pojo.RespBean;
 import com.yeyu.pojo.Role;
 import com.yeyu.service.IAdminService;
+import com.yeyu.utils.AdminUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -85,13 +86,34 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         return RespBean.success("登陆成功",tokenMap);
 
     }
+    /**
+    * @Description:获取登录的用户名
+    * @Param: [username]
+    * @return
+    * @date: 2022/2/7
+    */
     @Override
     public Admin getAdminusername(String username){
         return adminMapper.selectOne(new QueryWrapper<Admin>().eq("username",username).eq("enabled",true));
     }
+    /**
+    * @Description: 获取登录者权限权限
+    * @Param: [adminId]
+    * @return
+    * @date: 2022/2/7
+    */
     @Override
     public List<Role> getrole(Integer adminId){
         return roleMapper.getroles(adminId);
     }
-
+/**
+* @Description:查询所有操作员
+* @Param: [keywords]
+* @return
+* @date: 2022/2/7
+*/
+    @Override
+    public List<Admin> getAll(String keywords){
+        return adminMapper.getAll(AdminUtil.getCurrenAdmin().getId(), keywords);
+    }
 }

@@ -11,10 +11,29 @@
         <result column="enabled" property="enabled" />
         <result column="isParent" property="isParent" />
     </resultMap>
+    <resultMap id="DepartmentChildren" type="com.yeyu.pojo.Department" extends="BaseResultMap">
+        <collection property="childen" ofType="com.yeyu.pojo.Department"
+                    select="com.yeyu.mapper.DepartmentMapper.getAll" column="id">
 
+        </collection>
+    </resultMap>
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, name, parentId, depPath, enabled, isParent
     </sql>
-
+    <!-- 获取所有部门-->
+    <select id="getAll" resultMap="DepartmentChildren">
+        select
+            <include refid="Base_Column_List" />
+        from t_department
+        where parentId = #{parentId}
+    </select>
+    <!-- 添加部门-->
+    <select id="addDep" statementType="CALLABLE" >
+        call addDep(#{name,mode=IN,jdbcType=VARCHAR},#{parentId,mode=IN,jdbcType=INTEGER},#{enabled,mode=IN,jdbcType=BOOLEAN},#{result,mode=OUT,jdbcType=INTEGER},#{id,mode=OUT,jdbcType=INTEGER})
+    </select>
+    <!-- 删除部门-->
+    <select id="delDep" statementType="CALLABLE">
+        call deleteDep(#{id,mode=IN,jdbcType=INTEGER},#{result,mode=OUT,jdbcType=INTEGER})
+    </select>
 </mapper>

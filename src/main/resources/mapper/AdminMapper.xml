@@ -20,4 +20,8 @@
     <sql id="Base_Column_List">
         id, name, phone, telephone, address, enabled, username, password, user_face, remark
     </sql>
+    <!-- 获取所有操作员 -->
+    <select id="getAll" resultType="com.yeyu.pojo.Admin">
+
+    </select>
 </mapper>

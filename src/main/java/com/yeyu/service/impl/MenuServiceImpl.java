@@ -2,13 +2,12 @@ package com.yeyu.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yeyu.mapper.MenuMapper;
-import com.yeyu.pojo.Admin;
 import com.yeyu.pojo.Menu;
 import com.yeyu.service.IMenuService;
+import com.yeyu.utils.AdminUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -33,7 +32,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
 
     @Override
     public List<Menu> getmenu(){
-        Integer adminid = ((Admin) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+        Integer adminid = AdminUtil.getCurrenAdmin().getId();
         ValueOperations<String, Object> valueOperations = redisTemplate.opsForValue();
         List<Menu> menus = (List<Menu>)valueOperations.get("menu_"+adminid);
         if (CollectionUtils.isEmpty(menus)){
