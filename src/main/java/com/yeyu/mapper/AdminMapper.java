@@ -3,6 +3,7 @@ package com.yeyu.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.yeyu.pojo.Admin;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,5 +25,5 @@ public interface AdminMapper extends BaseMapper<Admin> {
     * @return
     * @date: 2022/2/7
     */
-    List<Admin> getAll(Integer id, String keywords);
+    List<Admin> getAllAdmin(@Param("id") Integer id,@Param("keywords") String keywords);
 }

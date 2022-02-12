@@ -4,8 +4,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yeyu.config.security.component.JwTokenUtils;
 import com.yeyu.mapper.AdminMapper;
+import com.yeyu.mapper.AdminRoleMapper;
 import com.yeyu.mapper.RoleMapper;
 import com.yeyu.pojo.Admin;
+import com.yeyu.pojo.AdminRole;
 import com.yeyu.pojo.RespBean;
 import com.yeyu.pojo.Role;
 import com.yeyu.service.IAdminService;
@@ -47,7 +49,8 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     private String tokenHead;
     @Autowired
     private RoleMapper roleMapper;
-
+    @Autowired
+    private AdminRoleMapper adminRoleMapper;
     /**
     * @Description:登录之后返回token
     * @Param: [username, password, request,code]
@@ -113,7 +116,22 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
 * @date: 2022/2/7
 */
     @Override
-    public List<Admin> getAll(String keywords){
-        return adminMapper.getAll(AdminUtil.getCurrenAdmin().getId(), keywords);
+    public List<Admin> getAllAdmin(String keywords){
+        return adminMapper.getAllAdmin(AdminUtil.getCurrenAdmin().getId(),keywords);
     }
+    /**
+    * @Description:添加操作员角色
+    * @Param: [adminid, rids]
+    * @return
+    * @date: 2022/2/8
+    */
+   @Override
+    public RespBean addAdminRole(Integer adminid,Integer[] rids){
+       adminRoleMapper.delete(new QueryWrapper<AdminRole>().eq("adminid",adminid));
+      Integer result =  adminRoleMapper.addAdminRole(adminid,rids);
+      if (rids.length == result){
+          return RespBean.success("添加成功");
+      }
+       return RespBean.error("添加失败");
+   }
 }
